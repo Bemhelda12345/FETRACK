@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Consumption Monitoring</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Monitor and manage your electricity consumption with ElectriTrack">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ElectriTrack">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" href="./icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-brand">
+            <h1>⚡ ElectriTrack</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#dashboard" id="nav-dashboard" class="nav-link">Dashboard</a>
+            <a href="#profile" id="nav-profile" class="nav-link">Profile</a>
+            <a href="#trends" id="nav-trends" class="nav-link">Trends</a>
+            <a href="#pay" id="nav-pay" class="nav-link">Pay</a>
+            <a href="#auth" id="nav-auth" class="nav-link">Sign In</a>
+        </nav>
+        <button class="hamburger" id="hamburger">=</button>
+    </header>
+    <div class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <a href="#dashboard" id="sidebar-dashboard" class="sidebar-link">Dashboard</a>
+            <a href="#profile" id="sidebar-profile" class="sidebar-link">Profile</a>
+            <a href="#trends" id="sidebar-trends" class="sidebar-link">Trends</a>
+            <a href="#pay" id="sidebar-pay" class="sidebar-link">Pay</a>
+            <a href="#auth" id="sidebar-auth" class="sidebar-link">Sign In</a>
+        </nav>
+    </div>
+    <main id="app-container">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </main>
+    <script type="module" src="main.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>

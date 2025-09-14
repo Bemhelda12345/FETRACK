@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ElectriTrack - Consumption Trends Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #ffffff;
+            min-height: 100vh;
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .trends-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .trends-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .trends-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(45deg, #ffffff, #e3f2fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .trends-header p {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            margin-bottom: 1rem;
+        }
+
+        .trends-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        /* CSS Chart Styles for Mobile Compatibility */
+        .css-chart {
+            width: 100%;
+            height: 400px;
+            position: relative;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 1rem;
+        }
+
+        .chart-title {
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .chart-area {
+            display: flex;
+            height: calc(100% - 3rem);
+            position: relative;
+        }
+
+        .y-axis {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 50px;
+            padding-right: 10px;
+            height: 100%;
+        }
+
+        .y-label {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: right;
+            line-height: 1;
+        }
+
+        .chart-content {
+            flex: 1;
+            position: relative;
+            height: 100%;
+        }
+
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .grid-line {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+
+        .chart-bars {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+            padding: 0 5px;
+        }
+
+        .bar-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        .bar-value {
+            font-size: 0.7rem;
+            color: #66bb6a;
+            font-weight: 600;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+
+        .bar {
+            width: 8px;
+            background: linear-gradient(to top, #66bb6a, #81c784);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            min-height: 10px;
+            margin-bottom: 5px;
+        }
+
+        .bar-dot {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 8px;
+            height: 8px;
+            background: #66bb6a;
+            border: 2px solid #ffffff;
+            border-radius: 50%;
+        }
+
+        .bar-label {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-align: center;
+            margin-top: 5px;
+            transform: rotate(-45deg);
+            white-space: nowrap;
+        }
+
+        .chart-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 30px;
+            width: 100%;
+            height: calc(100% - 30px);
+            pointer-events: none;
+            z-index: 3;
+        }
+
+        .chart-line polyline {
+            stroke: #66bb6a;
+            stroke-width: 3;
+            fill: none;
+            filter: drop-shadow(0 2px 4px rgba(102, 187, 106, 0.3));
+        }
+
+        .trends-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card h3 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.8;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #66bb6a;
+            margin-bottom: 0.25rem;
+        }
+
+        /* Responsive Design for Trends */
+        @media (max-width: 768px) {
+            .trends-container {
+                padding: 1rem;
+            }
+            
+            .trends-header h2 {
+                font-size: 2rem;
+            }
+            
+            .trends-content {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .chart-wrapper {
+                padding: 1rem;
+            }
+            
+            .trends-stats {
+                grid-template-columns: repeat(2, 1fr);
+                display: grid;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .trends-header h2 {
+                font-size: 1.75rem;
+            }
+            
+            .trends-stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .stat-card {
+                padding: 1rem;
+            }
+            
+            .stat-value {
+                font-size: 1.25rem;
+            }
+        }
+
+        .demo-note {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .demo-note h3 {
+            color: #66bb6a;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="trends-container">
+        <div class="demo-note">
+            <h3>✅ iPad & Mobile Compatible Chart</h3>
+            <p>This CSS-based chart works perfectly on all devices including iPads, iPhones, and Android devices. No canvas issues!</p>
+        </div>
+
+        <div class="trends-header">
+            <h2>Consumption Trends</h2>
+            <p>Daily electricity usage pattern for the past week</p>
+        </div>
+        
+        <div class="trends-content">
+            <div class="chart-wrapper">
+                <div class="css-chart">
+                    <div class="chart-title">Daily Electricity Consumption (kWh)</div>
+                    <div class="chart-area">
+                        <div class="y-axis">
+                            <div class="y-label">65.2</div>
+                            <div class="y-label">48.9</div>
+                            <div class="y-label">32.6</div>
+                        </div>
+                        <div class="chart-content">
+                            <div class="chart-grid">
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                                <div class="grid-line"></div>
+                            </div>
+                            <div class="chart-bars">
+                                <div class="bar-container">
+                                    <div class="bar-value">45.2</div>
+                                    <div class="bar" style="height: 60%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 17</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">52.8</div>
+                                    <div class="bar" style="height: 75%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 18</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">38.4</div>
+                                    <div class="bar" style="height: 45%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 19</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">41.7</div>
+                                    <div class="bar" style="height: 50%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 20</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">65.2</div>
+                                    <div class="bar" style="height: 95%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 21</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">48.9</div>
+                                    <div class="bar" style="height: 70%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 22</div>
+                                </div>
+                                <div class="bar-container">
+                                    <div class="bar-value">42.3</div>
+                                    <div class="bar" style="height: 55%">
+                                        <div class="bar-dot"></div>
+                                    </div>
+                                    <div class="bar-label">Jul 23</div>
+                                </div>
+                            </div>
+                            <svg class="chart-line" viewBox="0 0 100 100" preserveAspectRatio="none">
+                                <polyline points="0,40 16.67,25 33.33,55 50,50 66.67,5 83.33,30 100,45" fill="none" stroke="#66bb6a" stroke-width="2" vector-effect="non-scaling-stroke"/>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="trends-stats">
+                <div class="stat-card">
+                    <h3>Average Daily Usage</h3>
+                    <div class="stat-value">47.8 kWh</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Peak Usage Day</h3>
+                    <div class="stat-value">Jul 21 (65.2 kWh)</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Lowest Usage Day</h3>
+                    <div class="stat-value">Jul 19 (38.4 kWh)</div>
+                </div>
+                <div class="stat-card">
+                    <h3>Weekly Total</h3>
+                    <div class="stat-value">334.5 kWh</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
