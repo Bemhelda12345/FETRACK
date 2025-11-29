@@ -11,10 +11,36 @@ body {
   color: #ffffff !important;
   min-height: 100vh;
   line-height: 1.6;
+  font-weight: 500;
 }
 
-p, label, h1, h2, h3, h4, h5, h6, span, div, button, a, li {
+p {
   color: #ffffff !important;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+label {
+  color: #ffffff !important;
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff !important;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+span, a, li {
+  color: #ffffff !important;
+  font-weight: 500;
+}
+
+button {
+  color: #ffffff !important;
+  font-weight: 600;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
 }
 
 /* Navigation Styles */
@@ -168,18 +194,18 @@ main {
 
 /* Card Styles */
 .card {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
 }
 
 .card-header {
@@ -188,13 +214,14 @@ main {
   align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .card-header h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 /* Dashboard Styles */
@@ -551,8 +578,9 @@ main {
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 700;
   color: #ffffff !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .form-group input,
@@ -560,17 +588,20 @@ main {
 .form-group textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.4);
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.15);
   color: #ffffff;
   font-size: 1rem;
+  font-weight: 500;
   transition: all 0.3s ease;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .form-group input::placeholder,
 .form-group textarea::placeholder {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 400;
 }
 
 .form-group input:focus,
@@ -578,8 +609,8 @@ main {
 .form-group textarea:focus {
   outline: none;
   border-color: #42a5f5;
-  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
-  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3);
+  background: rgba(255, 255, 255, 0.2);
 }
 
 .form-actions {
@@ -839,9 +870,10 @@ main {
 
 .dialog-header h2 {
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   color: #1e3c72;
   margin: 0;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.1);
 }
 
 .dialog-close {
@@ -859,6 +891,7 @@ main {
   transition: all 0.2s ease;
   padding: 0;
   line-height: 1;
+  font-weight: 600;
 }
 
 .dialog-close:hover {
@@ -872,6 +905,11 @@ main {
   overflow-y: auto;
   position: relative;
   z-index: 1;
+}
+
+.dialog-body p, .dialog-body label, .dialog-body span {
+  font-weight: 500;
+  text-shadow: 0 1px 1px rgba(255, 255, 255, 0.1);
 }
 
 .dialog-message {
@@ -2310,31 +2348,35 @@ input:checked + .toggle-slider:before {
 }
 
 .payment-form .form-group label {
-    font-weight: 500;
-    color: #ffffff;
+    font-weight: 700;
+    color: #ffffff !important;
     margin-bottom: 0.5rem;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .payment-form .form-group input, .payment-form .form-group select {
     padding: 0.75rem;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.4);
     border-radius: 8px;
     font-size: 1rem;
+    font-weight: 500;
     transition: all 0.3s ease;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255, 255, 255, 0.15);
     color: #ffffff;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
 }
 
 .payment-form .form-group input::placeholder {
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 400;
 }
 
 .payment-form .form-group input:focus, .payment-form .form-group select:focus {
     outline: none;
     border-color: #42a5f5;
-    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.2);
-    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.3);
+    background: rgba(255, 255, 255, 0.2);
 }
 
 .payment-form .form-group select {
