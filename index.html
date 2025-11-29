@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electric Consumption Monitoring</title>
+    <link rel="stylesheet" href="style.css?v=58">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Monitor and manage your electricity consumption with ElectriTrack">
+    <meta name="theme-color" content="#4a90e2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="ElectriTrack">
+    
+    <!-- PWA Icons -->
+    <link rel="icon" href="./icons/icon-192x192.png">
+    <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="./manifest.json">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-brand">
+            <h1>⚡ ElectriTrack</h1>
+        </div>
+        <nav class="nav-links">
+            <a href="#dashboard" id="nav-dashboard" class="nav-link">Dashboard</a>
+            <a href="#profile" id="nav-profile" class="nav-link">Profile</a>
+            <a href="#auth" id="nav-auth" class="nav-link">Sign In</a>
+        </nav>
+        <button class="hamburger" id="hamburger">=</button>
+    </header>
+    <div class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <a href="#dashboard" id="sidebar-dashboard" class="sidebar-link">Dashboard</a>
+            <a href="#profile" id="sidebar-profile" class="sidebar-link">Profile</a>
+            <a href="#auth" id="sidebar-auth" class="sidebar-link">Sign In</a>
+        </nav>
+    </div>
+    <main id="app-container">
+        <div class="loading">
+            <div class="loading-spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </main>
+
+    <!-- Quick Actions Alert Dialog -->
+    <dialog id="quick-actions-alert-dialog" class="quick-actions-dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h2 id="dialog-title">Set Usage Alert</h2>
+                <button class="dialog-close" id="dialog-close-btn">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div id="dialog-message" class="dialog-message"></div>
+                <div id="dialog-input-container" class="dialog-input-container" style="display: none;">
+                    <label for="alert-threshold-input">Alert Threshold (kWh):</label>
+                    <input type="number" id="alert-threshold-input" min="0" step="0.1" placeholder="Enter threshold value">
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-btn dialog-btn-secondary" id="dialog-cancel-btn">Cancel</button>
+                <button class="dialog-btn dialog-btn-primary" id="dialog-confirm-btn">Confirm</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Bill Calculator Dialog -->
+    <dialog id="bill-calculator-dialog" class="quick-actions-dialog calculator-dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h2>🧮 Bill Calculator</h2>
+                <button class="dialog-close" id="calc-close-btn">&times;</button>
+            </div>
+            <div class="dialog-body">
+                <div class="calculator-form">
+                    <div class="formula-display">
+                        <div class="formula-text">
+                            <strong>Formula:</strong> (Current Usage - Past Usage) × Rate
+                        </div>
+                    </div>
+                    
+                    <div class="calc-input-group">
+                        <label for="calc-current-reading">Current Usage (kWh):</label>
+                        <input type="number" id="calc-current-reading" min="0" step="0.01" placeholder="Enter current reading">
+                    </div>
+                    <div class="calc-input-group">
+                        <label for="calc-previous-reading">Past Usage (kWh):</label>
+                        <input type="number" id="calc-previous-reading" min="0" step="0.01" placeholder="Enter past reading">
+                    </div>
+                    <div class="calc-input-group">
+                        <label for="calc-price-per-kwh">Rate (₱ per kWh):</label>
+                        <input type="number" id="calc-price-per-kwh" min="0" step="0.01" placeholder="Enter price per kWh">
+                    </div>
+                    
+                    <div class="calc-result" id="calc-result" style="display: none;">
+                        <div class="result-calculation">
+                            <div id="calc-formula-display" class="formula-breakdown">
+                                (<span id="current-val">0</span> - <span id="past-val">0</span>) × ₱<span id="rate-val">0.00</span> = 
+                                <span id="consumption-val">0</span> kWh × ₱<span id="rate-val2">0.00</span>
+                            </div>
+                        </div>
+                        <div class="result-label">Total Bill Amount:</div>
+                        <div class="result-amount">
+                            <span class="currency">₱</span>
+                            <span id="calc-result-amount">0.00</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-btn dialog-btn-secondary" id="calc-cancel-btn">Close</button>
+                <button class="dialog-btn dialog-btn-primary" id="calc-calculate-btn">Calculate</button>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Analytics Quick View Dialog -->
+    <dialog id="analytics-dialog" class="quick-actions-dialog analytics-dialog">
+        <div class="dialog-content">
+            <div class="dialog-header">
+                <h2 id="analytics-dialog-title">Analytics</h2>
+                <button class="dialog-close" id="analytics-close-btn">×</button>
+            </div>
+            <div class="dialog-body">
+                <div id="analytics-dialog-content">Loading...</div>
+            </div>
+            <div class="dialog-footer">
+                <button class="dialog-btn dialog-btn-secondary" id="analytics-close-btn2">Close</button>
+            </div>
+        </div>
+    </dialog>
+
+    <script type="module" src="main.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.error('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
