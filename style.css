@@ -3910,4 +3910,38 @@ input:checked + .toggle-slider:before {
   }
 }
 
+/* Mobile Touch-Friendly Improvements */
+button, a, input[type="button"], input[type="submit"], .payment-option, .btn-primary {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  min-height: 44px;
+  min-width: 44px;
+  padding: max(0.5rem, 44px - 100%) max(0.75rem, 44px - 100%);
+}
+
+/* Ensure buttons are properly clickable on mobile */
+button, a.btn, input[type="button"], input[type="submit"] {
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Fix for mobile click delay */
+@media (hover: none) and (pointer: coarse) {
+  button, a, .payment-option, .btn-primary, .dialog-btn {
+    -webkit-touch-callout: none;
+  }
+  
+  /* Ensure payment options are fully clickable on mobile */
+  .payment-option {
+    cursor: pointer;
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: auto;
+  }
+}
+
 /* Cache bust: 1764251899 */

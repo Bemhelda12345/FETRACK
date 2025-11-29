@@ -315,9 +315,9 @@ export function initializePaymentSystem() {
         generateQRCode();
     });
 
-    // Payment method selection
+    // Payment method selection - Add both click and touch support
     paymentOptions.forEach(option => {
-        option.addEventListener('click', () => {
+        const handleSelection = () => {
             // Remove active class from all options
             paymentOptions.forEach(opt => opt.classList.remove('active'));
             // Add active class to selected option
@@ -346,6 +346,12 @@ export function initializePaymentSystem() {
             if (currentBillData) {
                 generateQRCode();
             }
+        };
+
+        option.addEventListener('click', handleSelection);
+        option.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            handleSelection();
         });
     });
 
@@ -540,13 +546,18 @@ export function initializePaymentSystem() {
             </div>
          `;
         
-        // Add event listener to simulate button
+        // Add event listener to simulate button with both click and touch support
         setTimeout(() => {
             const simulateBtn = document.getElementById('simulate-btn');
             if (simulateBtn) {
-                simulateBtn.addEventListener('click', () => simulatePayment());
+                const handleSimulate = (e) => {
+                    e.preventDefault();
+                    simulatePayment();
+                };
+                simulateBtn.addEventListener('click', handleSimulate);
+                simulateBtn.addEventListener('touchend', handleSimulate);
             }
-        }, 100);
+        }, 50);
     }
 
     async function simulatePayment() {
@@ -839,36 +850,45 @@ export function initializePaymentSystem() {
         // Reload bill history to show new payment
         loadBillHistory();
         
-        // Add event listeners to receipt buttons
+        // Add event listeners to receipt buttons with both click and touch support
         setTimeout(() => {
             const anotherPaymentBtn = document.getElementById('another-payment-btn');
             const downloadBtn = document.getElementById('download-receipt-btn');
             const backToDashboardBtn = document.getElementById('back-to-dashboard-btn');
             
             if (anotherPaymentBtn) {
-                anotherPaymentBtn.addEventListener('click', () => {
+                const handleAnotherPayment = (e) => {
+                    e.preventDefault();
                     // Instead of reloading, render the payment form again
                     container.innerHTML = renderPaymentSection();
                     // Re-initialize the payment system
                     setTimeout(() => {
                         initializePaymentSystem();
                     }, 100);
-                });
+                };
+                anotherPaymentBtn.addEventListener('click', handleAnotherPayment);
+                anotherPaymentBtn.addEventListener('touchend', handleAnotherPayment);
             }
             
-             if (downloadBtn) {
-                downloadBtn.addEventListener('click', () => {
+            if (downloadBtn) {
+                const handleDownload = (e) => {
+                    e.preventDefault();
                     downloadReceipt(currentBillData, paymentMethodName, transactionId, currentDate);
-                });
+                };
+                downloadBtn.addEventListener('click', handleDownload);
+                downloadBtn.addEventListener('touchend', handleDownload);
             }
             
             if (backToDashboardBtn) {
-                backToDashboardBtn.addEventListener('click', () => {
+                const handleBackToDashboard = (e) => {
+                    e.preventDefault();
                     // Navigate back to dashboard
                     window.location.hash = '#dashboard';
-                });
+                };
+                backToDashboardBtn.addEventListener('click', handleBackToDashboard);
+                backToDashboardBtn.addEventListener('touchend', handleBackToDashboard);
             }
-        }, 100);
+        }, 50);
     }
 
      // Make makeAnotherPayment globally accessible
@@ -1250,9 +1270,10 @@ export async function setupBillStatus() {
             </div>
         `;
         
-        // Setup calendar toggle button
+        // Setup calendar toggle button with both click and touch support
         if (toggleCalendarBtn) {
-            toggleCalendarBtn.addEventListener('click', () => {
+            const handleToggleCalendar = (e) => {
+                e.preventDefault();
                 if (monthlyCalendar.style.display === 'none') {
                     monthlyCalendar.style.display = 'block';
                     toggleCalendarBtn.textContent = '📅 Hide Calendar';
@@ -1261,7 +1282,9 @@ export async function setupBillStatus() {
                     monthlyCalendar.style.display = 'none';
                     toggleCalendarBtn.textContent = '📅 Show Calendar';
                 }
-            });
+            };
+            toggleCalendarBtn.addEventListener('click', handleToggleCalendar);
+            toggleCalendarBtn.addEventListener('touchend', handleToggleCalendar);
         }
     } catch (error) {
         console.error('Error loading bill status:', error);
@@ -1325,11 +1348,21 @@ export function setupBillHistory() {
     const clearAllBtn = document.getElementById('clear-all-history-btn');
     
     if (downloadBtn) {
-        downloadBtn.addEventListener('click', downloadBillHistory);
+        const handleDownload = (e) => {
+            e.preventDefault();
+            downloadBillHistory();
+        };
+        downloadBtn.addEventListener('click', handleDownload);
+        downloadBtn.addEventListener('touchend', handleDownload);
     }
     
     if (clearAllBtn) {
-        clearAllBtn.addEventListener('click', clearAllHistory);
+        const handleClearAll = (e) => {
+            e.preventDefault();
+            clearAllHistory();
+        };
+        clearAllBtn.addEventListener('click', handleClearAll);
+        clearAllBtn.addEventListener('touchend', handleClearAll);
     }
     
     loadBillHistory();

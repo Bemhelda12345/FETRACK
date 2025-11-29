@@ -581,13 +581,21 @@ function setupEventListeners() {
   const payBtn = document.getElementById("pay-bill-btn");
   
   if (calcBtn) {
-    calcBtn.addEventListener("click", openBillCalculator);
+    const handleCalc = (e) => {
+      e.preventDefault();
+      openBillCalculator();
+    };
+    calcBtn.addEventListener("click", handleCalc);
+    calcBtn.addEventListener("touchend", handleCalc);
   }
   
   if (payBtn) {
-    payBtn.addEventListener("click", () => {
+    const handlePay = (e) => {
+      e.preventDefault();
       window.location.hash = '#pay';
-    });
+    };
+    payBtn.addEventListener("click", handlePay);
+    payBtn.addEventListener("touchend", handlePay);
   }
 }
 
@@ -831,10 +839,13 @@ function setupAnalyticsButtons() {
   const closeBtn = document.getElementById('analytics-close-btn');
   
   if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
+    const handleClose = (e) => {
+      e.preventDefault();
       console.log('Close button clicked');
       dialog.close();
-    });
+    };
+    closeBtn.addEventListener('click', handleClose);
+    closeBtn.addEventListener('touchend', handleClose);
   }
   
   // Backdrop close
@@ -1357,29 +1368,32 @@ async function initializeAnalyticsDialog(activeTab = 'overview') {
     
     document.getElementById('tab-alerts').innerHTML = alertsHTML;
     
-    // Add event listeners for clear alert buttons
+    // Add event listeners for clear alert buttons with touch support
     document.querySelectorAll('.clear-alert-btn').forEach(btn => {
-      btn.addEventListener('click', async (e) => {
-        const alertIndex = e.target.dataset.alertIndex;
-        const alertType = e.target.dataset.alertType;
-        const alertTimestamp = e.target.dataset.alertTimestamp;
+      const handleClearAlert = async (e) => {
+        e.preventDefault();
+        const alertIndex = btn.dataset.alertIndex;
+        const alertType = btn.dataset.alertType;
+        const alertTimestamp = btn.dataset.alertTimestamp;
         
         // Remove the alert from the display
-        const alertElement = e.target.closest('div[style*="flex"]');
+        const alertElement = btn.closest('div[style*="flex"]');
         if (alertElement) {
           alertElement.style.opacity = '0.5';
           alertElement.style.textDecoration = 'line-through';
-          e.target.textContent = 'Cleared';
-          e.target.disabled = true;
-          e.target.style.opacity = '0.5';
-          e.target.style.cursor = 'not-allowed';
+          btn.textContent = 'Cleared';
+          btn.disabled = true;
+          btn.style.opacity = '0.5';
+          btn.style.cursor = 'not-allowed';
         }
         
         // Clear the alert from database history
         await clearAlertFromHistory(alertType, alertTimestamp);
         
         showToastNotification(`${alertType === 'tampering' ? 'Tampering' : 'Outage'} alert cleared from history`, 'success');
-      });
+      };
+      btn.addEventListener('click', handleClearAlert);
+      btn.addEventListener('touchend', handleClearAlert);
     });
     
     // Calendar tab

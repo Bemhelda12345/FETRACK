@@ -116,16 +116,19 @@ function setupNavigation() {
   const hamburger = document.getElementById("hamburger");
   const sidebar = document.getElementById("sidebar");
   if (hamburger && sidebar) {
-    hamburger.addEventListener("click", () => {
+    const handleToggleSidebar = (e) => {
+      e.preventDefault();
       sidebar.classList.toggle("active");
-    });
+    };
+    hamburger.addEventListener("click", handleToggleSidebar);
+    hamburger.addEventListener("touchend", handleToggleSidebar);
   }
 
   // Dashboard navigation
   const navDashboard = document.getElementById("nav-dashboard");
   const sidebarDashboard = document.getElementById("sidebar-dashboard");
   if (navDashboard) {
-    navDashboard.addEventListener("click", (e) => {
+    const handleNavDashboard = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#dashboard";
@@ -133,10 +136,12 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    navDashboard.addEventListener("click", handleNavDashboard);
+    navDashboard.addEventListener("touchend", handleNavDashboard);
   }
   if (sidebarDashboard) {
-    sidebarDashboard.addEventListener("click", (e) => {
+    const handleSidebarDashboard = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#dashboard";
@@ -144,14 +149,16 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    sidebarDashboard.addEventListener("click", handleSidebarDashboard);
+    sidebarDashboard.addEventListener("touchend", handleSidebarDashboard);
   }
 
   // Profile navigation
   const navProfile = document.getElementById("nav-profile");
   const sidebarProfile = document.getElementById("sidebar-profile");
   if (navProfile) {
-    navProfile.addEventListener("click", (e) => {
+    const handleNavProfile = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#profile";
@@ -159,10 +166,12 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    navProfile.addEventListener("click", handleNavProfile);
+    navProfile.addEventListener("touchend", handleNavProfile);
   }
   if (sidebarProfile) {
-    sidebarProfile.addEventListener("click", (e) => {
+    const handleSidebarProfile = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#profile";
@@ -170,14 +179,16 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    sidebarProfile.addEventListener("click", handleSidebarProfile);
+    sidebarProfile.addEventListener("touchend", handleSidebarProfile);
   }
 
   // Pay navigation
   const navPay = document.getElementById("nav-pay");
   const sidebarPay = document.getElementById("sidebar-pay");
   if (navPay) {
-    navPay.addEventListener("click", (e) => {
+    const handleNavPay = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#pay";
@@ -185,10 +196,12 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    navPay.addEventListener("click", handleNavPay);
+    navPay.addEventListener("touchend", handleNavPay);
   }
   if (sidebarPay) {
-    sidebarPay.addEventListener("click", (e) => {
+    const handleSidebarPay = (e) => {
       e.preventDefault();
       if (currentUser) {
         window.location.hash = "#pay";
@@ -196,14 +209,16 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    sidebarPay.addEventListener("click", handleSidebarPay);
+    sidebarPay.addEventListener("touchend", handleSidebarPay);
   }
 
   // Auth/Logout navigation
   const navAuth = document.getElementById("nav-auth");
   const sidebarAuth = document.getElementById("sidebar-auth");
   if (navAuth) {
-    navAuth.addEventListener("click", async (e) => {
+    const handleNavAuth = async (e) => {
       e.preventDefault();
       if (currentUser) {
         // Logout
@@ -219,10 +234,12 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    navAuth.addEventListener("click", handleNavAuth);
+    navAuth.addEventListener("touchend", handleNavAuth);
   }
   if (sidebarAuth) {
-    sidebarAuth.addEventListener("click", async (e) => {
+    const handleSidebarAuth = async (e) => {
       e.preventDefault();
       if (currentUser) {
         // Logout
@@ -238,7 +255,9 @@ function setupNavigation() {
         window.location.hash = "#auth";
       }
       closeSidebar();
-    });
+    };
+    sidebarAuth.addEventListener("click", handleSidebarAuth);
+    sidebarAuth.addEventListener("touchend", handleSidebarAuth);
   }
 }
 
